@@ -15,7 +15,7 @@ env:
 
 notifications:
   recipients:
-    - alexey@kovyrin.net
+    - ahwatts@gmail.com
 
 script: ./ci_build
 
