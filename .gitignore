@@ -4,3 +4,6 @@ pkg
 _site
 .idea
 
+/.ruby-gemset
+/.ruby-version
+/test-project/.rails-version
