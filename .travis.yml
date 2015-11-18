@@ -53,5 +53,3 @@ matrix:
   allow_failures:
     # Allow rails 4.1.x builds to fail (we're not supporting it yet)
     # - env: RAILS_VERSION=4.1.1
-
-    - rvm: 2.2.3

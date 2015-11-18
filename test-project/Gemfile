@@ -20,12 +20,15 @@ version = File.exists?(rails_version_file) && File.read(rails_version_file).chom
 version ||= ENV['RAILS_VERSION']
 version ||= '4-0-stable'
 
-# Different mysql gem versions for different rails
-if RUBY_VERSION < "2.2.0" && version.to_i < 4
-  gem 'mysql', '~> 2.8.1'
-else
+# Different mysql gem versions for different rails & ruby
+if RUBY_VERSION >= "2.2.0" && version.to_i >= 4
   gem 'mysql'
   gem 'protected_attributes'
+elsif RUBY_VERSION >= "2.2.0"
+  gem 'mysql'
+  gem 'test-unit'
+else
+  gem 'mysql', '~> 2.8.1'
 end
 
 # Require gems for selected rails version

@@ -93,7 +93,7 @@ end
 task :test => "test_db:recreate" do
   ENV["RAILS_ENV"] = "test"
   cd "test-project"
-  rm "Gemfile.lock"
+  rm_f "Gemfile.lock"
   sh "bundle install"
   sh "bundle exec rake db:migrate"
   sh "bundle exec rspec spec"
