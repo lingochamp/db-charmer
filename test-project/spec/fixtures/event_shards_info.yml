@@ -4,8 +4,8 @@ shard1:
   id: 1
   db_host: <%= config["host"] || "localhost" %>
   db_port: <%= config["port"] || "3306" %>
-  db_user: <%= config["username"] || "" %>
-  db_pass: <%= config["password"] || "" %>
+  db_user: <%= config["username"] || "\"\"" %>
+  db_pass: <%= config["password"] || "\"\"" %>
   db_name: db_charmer_events_test_shard01
   open: 1
   enabled: 1
@@ -17,8 +17,8 @@ shard2:
   id: 2
   db_host: <%= config["host"] || "localhost" %>
   db_port: <%= config["port"] || "3306" %>
-  db_user: <%= config["username"] || "" %>
-  db_pass: <%= config["password"] || "" %>
+  db_user: <%= config["username"] || "\"\"" %>
+  db_pass: <%= config["password"] || "\"\"" %>
   db_name: db_charmer_events_test_shard02
   open: 1
   enabled: 1
@@ -30,8 +30,8 @@ empty:
   id: 3
   db_host: <%= config["host"] || "localhost" %>
   db_port: <%= config["port"] || "3306" %>
-  db_user: <%= config["username"] || "" %>
-  db_pass: <%= config["password"] || "" %>
+  db_user: <%= config["username"] || "\"\"" %>
+  db_pass: <%= config["password"] || "\"\"" %>
   db_name: db_charmer_events_test_shard01
   open: 1
   enabled: 1
