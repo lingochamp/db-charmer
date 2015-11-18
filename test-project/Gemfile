@@ -27,6 +27,9 @@ if RUBY_VERSION >= "2.2.0" && version.to_i >= 4
 elsif RUBY_VERSION >= "2.2.0"
   gem 'mysql'
   gem 'test-unit'
+elsif version.to_i >= 4
+  gem 'mysql'
+  gem 'protected_attributes'
 else
   gem 'mysql', '~> 2.8.1'
 end
