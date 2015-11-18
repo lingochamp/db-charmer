@@ -49,6 +49,3 @@ matrix:
     # # Do not run early Rails 3.2 tests on ruby 2.0
     # - rvm: 2.0.0
     #   env: RAILS_VERSION=3.2.3
-
-  allow_failures:
-    - rvm: 2.2.3
