@@ -42,9 +42,13 @@ describe DbCharmer, "AR connection switching" do
 
     context "with a hash parameter" do
       before do
+        common_conf = ActiveRecord::Base.configurations["common"]
         @conf = {
           :adapter => 'mysql',
+          :host => common_conf["host"],
+          :port => common_conf["port"],
           :username => "db_charmer_ro",
+          :password => common_conf["password"],
           :database => "db_charmer_sandbox_test",
           :connection_name => 'sanbox_ro'
         }

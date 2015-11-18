@@ -1,6 +1,11 @@
+<% config = ActiveRecord::Base.configurations["common"] %>
+
 shard1:
   id: 1
-  db_host: localhost
+  db_host: <%= config["host"] %>
+  db_port: <%= config["port"] %>
+  db_user: <%= config["username"] %>
+  db_pass: <%= config["password"] %>
   db_name: db_charmer_events_test_shard01
   open: 1
   enabled: 1
@@ -10,7 +15,10 @@ shard1:
 
 shard2:
   id: 2
-  db_host: localhost
+  db_host: <%= config["host"] %>
+  db_port: <%= config["port"] %>
+  db_user: <%= config["username"] %>
+  db_pass: <%= config["password"] %>
   db_name: db_charmer_events_test_shard02
   open: 1
   enabled: 1
@@ -20,7 +28,10 @@ shard2:
 
 empty:
   id: 3
-  db_host: localhost
+  db_host: <%= config["host"] %>
+  db_port: <%= config["port"] %>
+  db_user: <%= config["username"] %>
+  db_pass: <%= config["password"] %>
   db_name: db_charmer_events_test_shard01
   open: 1
   enabled: 1
