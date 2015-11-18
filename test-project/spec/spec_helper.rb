@@ -26,3 +26,13 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
   config.use_instantiated_fixtures  = false
 end
+
+begin
+  # Need this because putting test-unit in the Gemfile makes this run
+  # at exit, and it doesn't understand the args. Need to suss out what
+  # the heck is going on in Ruby 2.2.3 that makes us have to put
+  # test-unit in the Gemfile.
+  Test::Unit::AutoRunner.need_auto_run = false
+rescue
+  puts "Ignoring: #{$!}"
+end

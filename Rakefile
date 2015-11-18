@@ -96,5 +96,5 @@ task :test => "test_db:recreate" do
   rm "Gemfile.lock"
   sh "bundle install"
   sh "bundle exec rake db:migrate"
-  sh "bundle exec rspec spec"
+  sh "bundle exec rspec -cbfs spec"
 end
