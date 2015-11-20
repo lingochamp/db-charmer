@@ -25,14 +25,19 @@ describe "DbCharmer::AssociationProxy extending AR::Associations" do
     end
 
     it "should implement on_db proxy" do
+      posts = Post.arel_table
+      post_result = ActiveRecord::Base.connection
+        .select_all(posts.project(Arel.star).where(posts[:user_id].eq(@user.id)))
+
       Post.connection.should_not_receive(:select_all)
       User.connection.should_not_receive(:select_all)
 
       stub_columns_for_rails31 Post.on_db(:logs).connection
 
-      post_attributes = @posts.map { |p| p.attributes }
+      # post_attributes = @posts.map { |p| p.attributes }
       slave_connection = Post.on_db(:slave01).connection
-      slave_connection.should_receive(:select_all).and_return(post_attributes)
+      # slave_connection.should_receive(:select_all).and_return(post_attributes)
+      slave_connection.should_receive(:select_all).and_return(post_result)
 
       on_db_proxy = @user.posts.on_db(:slave01)
       posts_from_on_db = on_db_proxy.to_a
@@ -40,12 +45,17 @@ describe "DbCharmer::AssociationProxy extending AR::Associations" do
     end
 
     it "on_db should work in prefix mode" do
+      posts = Post.arel_table
+      post_result = ActiveRecord::Base.connection
+        .select_all(posts.project(Arel.star).where(posts[:user_id].eq(@user.id)))
+
       Post.connection.should_not_receive(:select_all)
       User.connection.should_not_receive(:select_all)
 
       stub_columns_for_rails31 Post.on_db(:logs).connection
-      post_attributes = @posts.map { |p| p.attributes }
-      Post.on_db(:slave01).connection.should_receive(:select_all).and_return(post_attributes)
+      # post_attributes = @posts.map { |p| p.attributes }
+      # Post.on_db(:slave01).connection.should_receive(:select_all).and_return(post_attributes)
+      Post.on_db(:slave01).connection.should_receive(:select_all).and_return(post_result)
       @user.on_db(:slave01).posts.should == @posts
     end
 

@@ -3,6 +3,8 @@ source 'http://rubygems.org'
 gem 'rake'
 gem 'rspec', '~> 3.0.0'
 gem 'rspec-rails'
+gem 'pry'
+gem 'pry-byebug'
 
 # Load DbCharmer as a gem
 if ENV['DB_CHARMER_GEM'].to_s == ''
@@ -15,9 +17,12 @@ else
 end
 
 # Detect Rails version we need to use
-rails_version_file = File.expand_path("../.rails-version", __FILE__)
-version = File.exists?(rails_version_file) && File.read(rails_version_file).chomp
-version ||= ENV['RAILS_VERSION']
+version = ENV['RAILS_VERSION']
+version ||=
+  begin
+    rails_version_file = File.expand_path("../.rails-version", __FILE__)
+    File.exists?(rails_version_file) ? File.read(rails_version_file).chomp : nil
+  end
 version ||= '4-0-stable'
 
 # Different mysql gem versions for different rails & ruby
