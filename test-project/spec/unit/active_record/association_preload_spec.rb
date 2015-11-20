@@ -6,6 +6,7 @@ describe "ActiveRecord in finder methods" do
   before do
     Post.db_magic :connection => nil
     User.db_magic :connection => nil
+    @empty_result = DbCharmer.rails42? ? ActiveRecord::Result.new([], []) : []
   end
 
   after do
@@ -34,12 +35,12 @@ describe "ActiveRecord in finder methods" do
 
   #-------------------------------------------------------------------------------------------
   it "should not switch assocations when called on a top-level connection" do
-    User.connection.should_receive(:select_all).and_return([])
+    User.connection.should_receive(:select_all).and_return(@empty_result)
     Post.includes(:user).to_a
   end
 
   it "should not switch connection when association model and main model are on different servers" do
-    LogRecord.connection.should_receive(:select_all).and_return([])
+    LogRecord.connection.should_receive(:select_all).and_return(@empty_result)
     User.on_db(:slave01).includes(:log_records).to_a
   end
 end

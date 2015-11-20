@@ -13,6 +13,11 @@ module DbCharmer
   end
 
   #-------------------------------------------------------------------------------------------------
+  # Used in all Rails4.2-specific places
+  def self.rails42?
+    rails4? && ::ActiveRecord::VERSION::MINOR >= 2
+  end
+
   # Used in all Rails4.1-specific places
   def self.rails41?
     rails4? && ::ActiveRecord::VERSION::MINOR >= 1
