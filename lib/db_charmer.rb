@@ -186,7 +186,7 @@ ActiveRecord::Base.extend(DbCharmer::ActiveRecord::DbMagic)
 
 #---------------------------------------------------------------------------------------------------
 # Setup association preload magic
-if DbCharmer.rails31?
+if DbCharmer.rails31? && !DbCharmer.rails42?
   require 'db_charmer/rails31/active_record/preloader/association'
   ActiveRecord::Associations::Preloader::Association.send(:include, DbCharmer::ActiveRecord::Preloader::Association)
 
@@ -194,6 +194,17 @@ if DbCharmer.rails31?
     require 'db_charmer/rails31/active_record/preloader/has_and_belongs_to_many'
     ActiveRecord::Associations::Preloader::HasAndBelongsToMany.send(:include, DbCharmer::ActiveRecord::Preloader::HasAndBelongsToMany)
   end
+elsif DbCharmer.rails42?
+  require 'db_charmer/rails42/active_record/associations/preloader/scope_builder'
+  require 'db_charmer/rails42/active_record/associations/preloader/through_association'
+  ActiveRecord::Associations::Preloader::HasMany.send(:include, DbCharmer::ActiveRecord::Associations::Preloader::ScopeBuilder)
+  ActiveRecord::Associations::Preloader::HasManyThrough.send(:include, DbCharmer::ActiveRecord::Associations::Preloader::ScopeBuilder)
+  ActiveRecord::Associations::Preloader::HasOne.send(:include, DbCharmer::ActiveRecord::Associations::Preloader::ScopeBuilder)
+  ActiveRecord::Associations::Preloader::HasOneThrough.send(:include, DbCharmer::ActiveRecord::Associations::Preloader::ScopeBuilder)
+  ActiveRecord::Associations::Preloader::BelongsTo.send(:include, DbCharmer::ActiveRecord::Associations::Preloader::ScopeBuilder)
+
+  ActiveRecord::Associations::Preloader::HasManyThrough.send(:include, DbCharmer::ActiveRecord::Associations::Preloader::ThroughAssociation)
+  ActiveRecord::Associations::Preloader::HasOneThrough.send(:include, DbCharmer::ActiveRecord::Associations::Preloader::ThroughAssociation)
 else
   require 'db_charmer/active_record/association_preload'
   ActiveRecord::Base.extend(DbCharmer::ActiveRecord::AssociationPreload)
