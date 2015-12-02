@@ -3,6 +3,7 @@ pkg
 .DS_Store
 _site
 .idea
+.byebug_history
 
 /.ruby-gemset
 /.ruby-version

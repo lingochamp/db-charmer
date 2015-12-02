@@ -20,6 +20,8 @@ describe Category do
     end
 
     it "should not happen" do
+      skip "What is this even testing, and why is it useful?"
+
       # Get main db connection
       main_connection = Category.connection
 
@@ -36,7 +38,7 @@ describe Category do
         slave_connection.select_all(*args)
       end
 
-      # Fine a category via a different connection
+      # Find a category via a different connection
       cat = Category.on_db(:logs).find(1)
 
       # Find related posts for the category using a different connection
