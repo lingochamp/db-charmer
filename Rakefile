@@ -7,7 +7,9 @@ rescue LoadError
   puts "Docker lib not available. You won't be able to manage the test database without it."
 end
 
-Bundler::GemHelper.install_tasks
+namespace "bundler" do
+  Bundler::GemHelper.install_tasks
+end
 
 DB_DOCKER_IMAGE = "percona:5.6"
 DB_PORT = 3307
@@ -27,12 +29,36 @@ def run_command(cmd)
   end
 end
 
+# A subclass of Bundler::GemHelper that allows us to push to Gemfury
+# instead of rubygems.org.
+class GemfuryGemHelper < Bundler::GemHelper
+  def release_gem(built_gem_path=nil)
+    guard_clean
+    built_gem_path ||= build_gem
+    tag_version { git_push } unless already_tagged?
+    gemfury_push(built_gem_path) if gem_push?
+  end
+
+  protected
+
+  def gemfury_push(path)
+    sh("fury push --as=reverbnation '#{path}'")
+    Bundler.ui.confirm "Pushed #{name} #{version} to gemfury.com."
+  end
+end
+
+spec = Bundler::GemHelper.gemspec
+
+task :default => :test
+
 namespace :docker do
+  desc "Pull the database image (#{DB_DOCKER_IMAGE}) to the docker server."
   task :db_image do
     Docker::Image.create("fromImage" => DB_DOCKER_IMAGE)
   end
 
   namespace :db_container do
+    desc "Start the test database container."
     task :start do
       container = find_db_container
       if container.nil?
@@ -57,6 +83,7 @@ namespace :docker do
       end
     end
 
+    desc "Stop the test database container."
     task :stop do
       container = find_db_container
       if container
@@ -65,6 +92,7 @@ namespace :docker do
       end
     end
 
+    desc "Restart the test database container."
     task :reset do
       Rake::Task["docker:db_container:stop"].invoke
       Rake::Task["docker:db_container:start"].invoke
@@ -73,6 +101,7 @@ namespace :docker do
 end
 
 namespace :test_db do
+  desc "Rebuild the test database."
   task :recreate => "docker:db_container:start" do
     docker_host = ENV["DOCKER_HOST"] =~ /tcp:\/\/(.*):\d+/ && $1
     create_database_sql = File.expand_path("../test-project/db/create_databases.sql", __FILE__)
@@ -90,6 +119,7 @@ namespace :test_db do
   end
 end
 
+desc "Start the test database container, and run the test suite against it."
 task :test => "test_db:recreate" do
   ENV["RAILS_ENV"] = "test"
   cd "test-project"
@@ -97,4 +127,12 @@ task :test => "test_db:recreate" do
   sh "bundle install"
   sh "bundle exec rake db:migrate"
   sh "bundle exec rspec spec"
+end
+
+desc "Build #{spec.name}-#{spec.version}.gem into the pkg directory."
+task :build => "bundler:build"
+
+desc "Create tag v#{spec.version} and build and push #{spec.name}-#{spec.version}.gem to Gemfury"
+task :release => "bundler:build" do
+  GemfuryGemHelper.new.release_gem
 end
