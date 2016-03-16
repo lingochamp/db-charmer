@@ -5,6 +5,7 @@ gem 'rspec', '~> 3.0.0'
 gem 'rspec-rails'
 gem 'pry'
 gem 'pry-byebug'
+gem 'docker-api'
 
 # Load DbCharmer as a gem
 if ENV['DB_CHARMER_GEM'].to_s == ''
@@ -27,13 +28,13 @@ version ||= '4-0-stable'
 
 # Different mysql gem versions for different rails & ruby
 if RUBY_VERSION >= "2.2.0" && version.to_i >= 4
-  gem 'mysql'
+  gem 'mysql2', '~> 0.3.18'
   gem 'protected_attributes'
 elsif RUBY_VERSION >= "2.2.0"
   gem 'mysql'
   gem 'test-unit'
 elsif version.to_i >= 4
-  gem 'mysql'
+  gem 'mysql2', '~> 0.3.18'
   gem 'protected_attributes'
 else
   gem 'mysql', '~> 2.8.1'

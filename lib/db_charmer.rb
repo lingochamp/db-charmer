@@ -212,3 +212,8 @@ else
   # Open up really useful API method
   ActiveRecord::AssociationPreload::ClassMethods.send(:public, :preload_associations)
 end
+
+if DbCharmer.rails4?
+  require 'db_charmer/rails42/active_record/relation/merger'
+  ActiveRecord::Relation::Merger.send(:include, DbCharmer::ActiveRecord::Relation::Merger)
+end

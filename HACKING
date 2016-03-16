@@ -1,0 +1,13 @@
+export SEC_DB_PASSWORD=<random string>
+export DOCKER_HOST="tcp://<ip>:<port>" # just like docker-machine
+rake # will fail, this just creates the container and the database
+pushd test-project/config
+cp database.yml.example database.yml
+<add the following to the common entry:
+
+  password: <%= ENV["SEC_DB_PASSWORD"] %>
+  host: <%= ENV["DOCKER_HOST"] =~ /tcp:\/\/(.*):\d+/ && $1 %>
+  port: 3307
+>
+popd
+rake

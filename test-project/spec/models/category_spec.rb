@@ -20,8 +20,6 @@ describe Category do
     end
 
     it "should not happen" do
-      skip "What is this even testing, and why is it useful?"
-
       # Get main db connection
       main_connection = Category.connection
 
