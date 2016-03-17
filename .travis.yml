@@ -53,7 +53,7 @@ matrix:
 
     # Do not run Rails 3.2 on ruby 2.3.
     - rvm: 2.3.0
-      env: RAILS_VERSION=3.2.22
+      env: RAILS_VERSION=3.2.22.2
 
   allow_failures:
     # Allow rails 4.1.x builds to fail (we're not supporting it yet)
