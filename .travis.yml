@@ -13,7 +13,7 @@ env:
   # - RAILS_VERSION=3.2.3
   # - RAILS_VERSION=3.2.15
   # - RAILS_VERSION=3.2.15 DB_CHARMER_GEM=1.9.0
-  - RAILS_VERSION=3.2.22
+  - RAILS_VERSION=3.2.22.2
 
 notifications:
   recipients:
