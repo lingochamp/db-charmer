@@ -8,3 +8,5 @@ _site
 /.ruby-gemset
 /.ruby-version
 /test-project/.rails-version
+
+*.swp

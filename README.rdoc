@@ -56,6 +56,8 @@ At the moment we have the following build matrix:
   - 3.0
   - 3.1
   - 3.2
+  - 4.1
+  - 4.2
 * Ruby versions:
   - 1.9.3
   - 2.0.0 (Rails 3.2+ only)
