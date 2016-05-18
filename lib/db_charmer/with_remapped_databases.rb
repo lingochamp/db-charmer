@@ -1,3 +1,5 @@
+require 'db_charmer/active_record/hijack_child_classes'
+
 module DbCharmer
   def self.with_remapped_databases(mappings, &proc)
     old_mappings = ::ActiveRecord::Base.db_charmer_database_remappings
@@ -35,14 +37,5 @@ end
 
 #---------------------------------------------------------------------------------------------------
 # Hijack connection on all new AR classes when we're in a block with main AR connection remapped
-class ActiveRecord::Base
-  class << self
-    def inherited_with_hijacking(subclass)
-      out = inherited_without_hijacking(subclass)
-      hijack_connection! if DbCharmer.hijack_new_classes?
-      out
-    end
+::ActiveRecord::Base.send(:extend, DbCharmer::ActiveRecord::HijackChildClasses)
 
-    alias_method_chain :inherited, :hijacking
-  end
-end
