@@ -80,6 +80,18 @@ module DbCharmer
     ::ActionController::Base.extend(DbCharmer::ActionController::ForceSlaveReads::ClassMethods)
     ::ActionController::Base.send(:include, DbCharmer::ActionController::ForceSlaveReads::InstanceMethods)
   end
+
+  def self.config_source
+    if @global_config
+      @config_source ||= {}
+    else
+      Thread.current
+    end
+  end
+
+  def self.global_config=(global)
+    @global_config = global
+  end
 end
 
 #---------------------------------------------------------------------------------------------------

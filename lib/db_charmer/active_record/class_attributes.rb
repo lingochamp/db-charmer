@@ -51,7 +51,7 @@ module DbCharmer
 
       #---------------------------------------------------------------------------------------------
       def db_charmer_force_slave_reads_flags
-        Thread.current[:db_charmer_force_slave_reads] ||= {}
+        DbCharmer.config_source[:db_charmer_force_slave_reads] ||= {}
       end
 
       def db_charmer_force_slave_reads=(force)

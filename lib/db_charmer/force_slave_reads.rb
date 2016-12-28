@@ -9,17 +9,17 @@ module DbCharmer
 
   #-------------------------------------------------------------------------------------------------
   def self.forced_slave_reads_setting
-    Thread.current[:db_charmer_forced_slave_reads]
+    DbCharmer.config_source[:db_charmer_forced_slave_reads]
   end
 
   def self.forced_slave_reads_setting=(val)
-    Thread.current[:db_charmer_forced_slave_reads] = val
+    DbCharmer.config_source[:db_charmer_forced_slave_reads] = val
   end
 
   #-------------------------------------------------------------------------------------------------
   def self.force_slave_reads?
     # If global force slave reads is requested, do it
-    return true if Thread.current[:db_charmer_forced_slave_reads]
+    return true if DbCharmer.config_source[:db_charmer_forced_slave_reads]
 
     # If not, try to use current controller to decide on this
     return false unless current_controller.respond_to?(:force_slave_reads?)
